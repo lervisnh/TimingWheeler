@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# log
+*.log
+
+# Compile directory
+build/
+compile_commands.json
+
+# Clangd cache
+.cache/clangd/
