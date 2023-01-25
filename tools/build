@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+sfdesc="Auto-build tool for TimingWheeler"
+sfargs+=("debug;D;Cmake debug build mode")
+
+TOOLS_ABSOLUTE_DIR="$( cd $(dirname ${BASH_SOURCE[0]}) && pwd )"
+source ${TOOLS_ABSOLUTE_DIR}/sf-argvs-parser
+PROJECT_ABSOLUTE_DIR="$( dirname ${TOOLS_ABSOLUTE_DIR} )"
+CMAKE_BUILD_DIR="${PROJECT_ABSOLUTE_DIR}/build/"
+
+if [ -d ${CMAKE_BUILD_DIR}  ]; then
+    rm -r ${CMAKE_BUILD_DIR}/*
+else
+    mkdir -p ${CMAKE_BUILD_DIR}
+fi
+
+CMAKE_BUILD_MODE=Release
+if [ "$debug" == true ]; then
+    CMAKE_BUILD_MODE=Debug
+fi
+
+cd ${CMAKE_BUILD_DIR}
+cmake -S ${PROJECT_ABSOLUTE_DIR} -B ${CMAKE_BUILD_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_MODE} && \
+make && \
+cp compile_commands.json ${PROJECT_ABSOLUTE_DIR}

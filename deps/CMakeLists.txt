@@ -1,0 +1,8 @@
+SUBDIRLIST(DEPS_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(PYBIND11_NOPYTHON ON CACHE BOOL "Disable search for Python")
+
+FOREACH(subdir ${DEPS_SUBDIRS})
+    message(STATUS "Dependency : ${subdir}")
+    ADD_SUBDIRECTORY(${subdir})
+ENDFOREACH()
