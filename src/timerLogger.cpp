@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "timerLogger.h"
 #include "spdlog/common.h"
 
 namespace _logger {
@@ -6,7 +6,7 @@ namespace _logger {
 std::atomic<Logger *> Logger::singleton{nullptr};
 
 Logger::Logger(const char *log_file)
-    : impl(spdlog::basic_logger_mt<spdlog::async_factory>("AsyncLogger",
+    : impl(spdlog::basic_logger_mt<spdlog::async_factory>("timerLogger",
                                                           log_file)) {
 #if NDEBUG
   impl->set_level(spdlog::level::warn);
@@ -17,9 +17,9 @@ Logger::Logger(const char *log_file)
 #endif
 };
 
-Logger::LoggerImpl &Logger::getImpl() { return impl; };
+Logger::LoggerImpl &Logger::get_impl() { return impl; };
 
-bool Logger::initSingleton(const char *log_file) {
+bool Logger::init_singleton(const char *log_file) {
   if (!Logger::singleton.load()) {
     Logger::singleton.exchange(new Logger(log_file));
     return true;
@@ -27,29 +27,29 @@ bool Logger::initSingleton(const char *log_file) {
   return false;
 };
 
-void Logger::resetSingleton(const char *log_file) {
+void Logger::reset_singleton(const char *log_file) {
   _logger::Logger *old_singleton = Logger::singleton.load();
   Logger::singleton.exchange(nullptr);
   if (log_file) {
-    assert(Logger::initSingleton(log_file) == true);
+    assert(Logger::init_singleton(log_file) == true);
   }
   if (old_singleton) {
     delete old_singleton;
   }
 };
 
-Logger &Logger::getSingleton() { return *(Logger::singleton.load()); };
+Logger &Logger::get_singleton() { return *(Logger::singleton.load()); };
 
 }; // namespace _logger
 
 namespace LOG {
 
 bool init(const char *log_file) {
-  return _logger::Logger::initSingleton(log_file);
+  return _logger::Logger::init_singleton(log_file);
 };
 
 void reset(const char *log_file) {
-  _logger::Logger::resetSingleton(log_file);
+  _logger::Logger::reset_singleton(log_file);
 };
 
 }; // namespace LOG

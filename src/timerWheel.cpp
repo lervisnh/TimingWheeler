@@ -1,6 +1,6 @@
 #include "timerWheel.h"
 #include "bitTypes.h"
-#include "logger.h"
+#include "timerLogger.h"
 #include <algorithm>
 #include <cassert>
 #include <utility>
@@ -26,7 +26,7 @@ timerWheel::timerWheel() : jiffy(0) {
 
 timerWheel::~timerWheel() { LOG::reset(); };
 
-timerWheel &timerWheel::getInstance() {
+timerWheel &timerWheel::get_instance() {
   static timerWheel instance;
   return instance;
 };

@@ -11,7 +11,7 @@
 namespace _timer {
 
 #define TICK_INTERVAL_US 100
-class Driver {
+class timerDriver {
 public:
   using Clock = std::chrono::steady_clock;
   using Duration = std::chrono::duration<_timer::time_t, std::nano>;
@@ -30,13 +30,13 @@ protected:
   void tik();
 
 public:
-  Driver() = delete;
-  explicit Driver(timerWheel *);
-  ~Driver();
+  timerDriver() = delete;
+  explicit timerDriver(timerWheel *);
+  ~timerDriver();
 
   _timer::time_t cal_expires(TimePoint &&);
 
-  static Driver &getInstance();
+  static timerDriver &get_instance();
 };
 
 }; // namespace _timer

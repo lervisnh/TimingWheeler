@@ -1,5 +1,4 @@
-#ifndef __LIST_H
-#define __LIST_H
+#pragma once
 
 #include "timerNode.h"
 #include <assert.h>
@@ -63,5 +62,3 @@ public:
 };
 
 }; // namespace _timer
-
-#endif

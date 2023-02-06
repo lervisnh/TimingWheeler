@@ -1,7 +1,6 @@
-#ifndef __TIMER_WHEEL_H
-#define __TIMER_WHEEL_H
+#pragma once
 
-#include "logger.h"
+#include "timerLogger.h"
 #include "timerNode.h"
 #include "timerSlot.h"
 #include <atomic>
@@ -30,7 +29,7 @@ public:
   Wheel wheel5;
 
   virtual ~timerWheel();
-  static timerWheel &getInstance();
+  static timerWheel &get_instance();
 
   time_t update_time(time_t now_time, List &timeouted);
 
@@ -39,5 +38,3 @@ public:
 };
 
 }; // namespace _timer
-
-#endif

@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "timerLogger.h"
 #include "timerDriver.h"
 #include "timerEvent.h"
 #include <bits/stdint-uintn.h>
@@ -27,7 +27,7 @@ void timer_node_print(_timer::time_t exp) {
 
 void timeCore_add_print_timerNode(_timer::time_t exp) {
   auto node = _timerEvent::New(exp == 999 ? 3 : 1, exp, timer_node_print, exp);
-  _timer::timerWheel::getInstance().add_timer_node(*node);
+  _timer::timerWheel::get_instance().add_timer_node(*node);
   timer_ids.emplace_back(node->timerID());
 };
 
@@ -59,7 +59,7 @@ int main() {
   // endl;
   // tms.push_back(std::chrono::system_clock::now().time_since_epoch().count());
   // usleep(100);
-  _timer::Driver::getInstance();
+  _timer::timerDriver::get_instance();
   usleep(1000 * 1000 * 30);
   for (uint64_t i = 0; i < tms.size(); ++i) {
     cout << exps[i] << endl;

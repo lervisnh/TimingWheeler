@@ -10,10 +10,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "bitTypes.h"
-#include "logger.h"
-#include "noncopyable.h"
-#include "timerNode.h"
+#include "timerLogger.h"
 #include "timerWheel.h"
 
 #if __cplusplus < 201402L
@@ -28,6 +25,7 @@ template <class T> using result_of_t = typename std::result_of<T>::type;
 }
 #endif
 
+using _timer::noncopyable;
 using _timer::timerWheel;
 
 namespace _timerEvent {
@@ -63,7 +61,7 @@ public:
     }
     auto &ev = timerEventObject::useing[id];
     // remove from wheel-slot
-    timerWheel::getInstance().del_timer_node(*ev);
+    timerWheel::get_instance().del_timer_node(*ev);
     delete ev;
     timerEventObject::useing.erase(id);
     return true;

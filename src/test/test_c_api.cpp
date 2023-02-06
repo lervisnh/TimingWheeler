@@ -1,4 +1,4 @@
-#include "c_api.h"
+#include "cAPI.h"
 
 #include <iostream>
 #include <unistd.h>
@@ -19,14 +19,14 @@ void timer_node_print(_timer::time_t idx) {
 };
 
 int main() {
-  timerWheeler::init_timer();
-  cout << timerWheeler::register_timer(2, 10, timer_node_print, 10) << endl;
-  cout << timerWheeler::register_timer(1, 0, timer_node_print, 0) << endl;
-  cout << timerWheeler::register_timer(1, 99, timer_node_print, 99) << endl;
+  timingWheeler::init_timer();
+  cout << timingWheeler::register_timer(2, 10, timer_node_print, 10) << endl;
+  cout << timingWheeler::register_timer(1, 0, timer_node_print, 0) << endl;
+  cout << timingWheeler::register_timer(1, 99, timer_node_print, 99) << endl;
 
-  auto remove_timer = timerWheeler::register_timer(1, 59, timer_node_print, 59);
+  auto remove_timer = timingWheeler::register_timer(1, 59, timer_node_print, 59);
   cout << "unregister " << remove_timer << " : " << std::boolalpha
-       << timerWheeler::unregister_timer(remove_timer) << endl;
+       << timingWheeler::unregister_timer(remove_timer) << endl;
 
   sleep(3);
 

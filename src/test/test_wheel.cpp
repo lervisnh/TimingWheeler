@@ -12,12 +12,12 @@ void timer_node_print(_timer::time_t exp) { cout << exp << endl; };
 
 void timeCore_add_print_timerNode(_timer::time_t exp) {
   auto node = _timerEvent::New(1, exp, timer_node_print, exp);
-  _timer::timerWheel::getInstance().add_timer_node(*node);
+  _timer::timerWheel::get_instance().add_timer_node(*node);
 };
 
 int main() {
   _timer::List timeouts;
-  auto &timer_core = _timer::timerWheel::getInstance();
+  auto &timer_core = _timer::timerWheel::get_instance();
   auto now = timer_core.update_time(0, timeouts);
 
   assert(timeouts.empty());

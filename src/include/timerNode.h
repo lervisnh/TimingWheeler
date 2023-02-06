@@ -31,4 +31,15 @@ public:
   };
 };
 
+class noncopyable {
+  // https://github.com/chenshuo/muduo/blob/master/muduo/base/noncopyable.h
+public:
+  noncopyable(const noncopyable &) = delete;
+  void operator=(const noncopyable &) = delete;
+
+protected:
+  noncopyable() = default;
+  ~noncopyable() = default;
+};
+
 }; // namespace _timer

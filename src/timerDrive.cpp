@@ -1,5 +1,5 @@
 #include "bitTypes.h"
-#include "logger.h"
+#include "timerLogger.h"
 #include "timerDriver.h"
 #include "timerEvent.h"
 #include "timerNode.h"
@@ -11,7 +11,7 @@
 
 namespace _timer {
 
-void Driver::start() {
+void timerDriver::start() {
   running.exchange(true);
   startns = TimePoint::clock::now();
   while (running) {
@@ -25,24 +25,24 @@ void Driver::start() {
   };
 };
 
-void Driver::stop() {
+void timerDriver::stop() {
   running.exchange(false);
   this->thread.join();
   _timerEvent::timerEventObject::clear_all();
 };
-Driver::~Driver() { stop(); };
+timerDriver::~timerDriver() { stop(); };
 
-Driver::Driver(timerWheel *timer_wheel)
+timerDriver::timerDriver(timerWheel *timer_wheel)
     : timerwheel(timer_wheel ? timer_wheel
-                             : &_timer::timerWheel::getInstance()),
+                             : &_timer::timerWheel::get_instance()),
       running(false), thread([this] { this->start(); }){};
 
-Driver &Driver::getInstance() {
-  static Driver instance(nullptr);
+timerDriver &timerDriver::get_instance() {
+  static timerDriver instance(nullptr);
   return instance;
 };
 
-void Driver::tik() {
+void timerDriver::tik() {
   List timeouted;
   timerwheel->update_time(cal_expires(TimePoint::clock::now()), timeouted);
   _timer::timerNode *n = nullptr;
@@ -58,7 +58,7 @@ void Driver::tik() {
   }
 };
 
-_timer::time_t Driver::cal_expires(TimePoint &&time_point) {
+_timer::time_t timerDriver::cal_expires(TimePoint &&time_point) {
   return (time_point - startns).count() /*ns*/ / tik_ns;
 };
 

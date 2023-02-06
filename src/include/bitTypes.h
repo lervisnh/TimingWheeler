@@ -1,5 +1,4 @@
-#ifndef __CONST_H
-#define __CONST_H
+#pragma once
 
 // https://stackoverflow.com/questions/1505582/determining-32-vs-64-bit-in-c
 
@@ -47,5 +46,3 @@ using index_t = _bitTypes::uint64_t;
 using counter_t = _bitTypes::int64_t;
 
 }; // namespace _timer
-
-#endif

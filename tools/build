@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-sfdesc="Auto-build tool for TimingWheeler"
+sfdesc="Auto-build tool for timingWheeler"
 sfargs+=("debug;D;Cmake debug build mode")
 
 TOOLS_ABSOLUTE_DIR="$( cd $(dirname ${BASH_SOURCE[0]}) && pwd )"
