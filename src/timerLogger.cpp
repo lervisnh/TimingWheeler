@@ -6,18 +6,18 @@ namespace _logger {
 std::atomic<Logger *> Logger::singleton{nullptr};
 
 Logger::Logger(const char *log_file)
-    : impl(spdlog::basic_logger_mt<spdlog::async_factory>("timerLogger",
+    : impl_(spdlog::basic_logger_mt<spdlog::async_factory>("timerLogger",
                                                           log_file)) {
 #if NDEBUG
-  impl->set_level(spdlog::level::warn);
-  impl->set_pattern("[%Y-%m-%d %H:%M:%S.%f] [%l] %v");
+  impl_->set_level(spdlog::level::warn);
+  impl_->set_pattern("[%Y-%m-%d %H:%M:%S.%f] [%l] %v");
 #else
-  impl->set_level(spdlog::level::trace);
-  impl->set_pattern("[%Y-%m-%d %H:%M:%S.%f] [%i] [tid %t] [%l] %v");
+  impl_->set_level(spdlog::level::trace);
+  impl_->set_pattern("[%Y-%m-%d %H:%M:%S.%f] [%i] [tid %t] [%l] %v");
 #endif
 };
 
-Logger::LoggerImpl &Logger::get_impl() { return impl; };
+Logger::LoggerImpl &Logger::get_impl() { return impl_; };
 
 bool Logger::init_singleton(const char *log_file) {
   if (!Logger::singleton.load()) {

@@ -93,44 +93,44 @@ List timer_wheels_update(timerWheel *core, time_t jiffies) {
 
 time_t timerWheel::update_time(time_t now_time, List &timeouted) {
   timeouted = _internal::timer_wheels_update(this, now_time);
-  assert(this->jiffy.load() == now_time);
+  assert(jiffy.load() == now_time);
   return jiffy;
 };
 
 bool timerWheel::add_timer_node(timerNode &timer_node) {
   LOG::trace("add expire = {} node to wheels, jiffy = {}", timer_node.expire,
              jiffy.load());
-  if (timer_node.expire < this->jiffy ||
+  if (timer_node.expire < jiffy ||
       timer_node.expire > _internal::MAX_JIFFY) {
     LOG::warn("add node expire = {} failed, jiffy = {} (max-jiffy={})",
-              timer_node.expire, this->jiffy.load(), _internal::MAX_JIFFY);
+              timer_node.expire, jiffy.load(), _internal::MAX_JIFFY);
     return false;
   }
 
-  _timer::time_t time_diff = timer_node.expire - this->jiffy;
+  _timer::time_t time_diff = timer_node.expire - jiffy;
   List *wheel_slot = nullptr;
 
   int i;
   int hit_wheel_level;
   if (time_diff < TIMER_SLOT_SIZE) {
     i = timer_node.expire & TIMER_WHEEL_MASK;
-    wheel_slot = this->wheel1.slot + i;
+    wheel_slot = wheel1.slot + i;
     hit_wheel_level = 1;
   } else if (time_diff < (1UL << (TIMER_SLOT_BIT * 2))) {
     i = (timer_node.expire >> TIMER_SLOT_BIT) & TIMER_WHEEL_MASK;
-    wheel_slot = this->wheel2.slot + i;
+    wheel_slot = wheel2.slot + i;
     hit_wheel_level = 2;
   } else if (time_diff < (1UL << (TIMER_SLOT_BIT * 3))) {
     i = (timer_node.expire >> (TIMER_SLOT_BIT * 2)) & TIMER_WHEEL_MASK;
-    wheel_slot = this->wheel3.slot + i;
+    wheel_slot = wheel3.slot + i;
     hit_wheel_level = 3;
   } else if (time_diff < (1UL << (TIMER_SLOT_BIT * 4))) {
     i = (timer_node.expire >> (TIMER_SLOT_BIT * 3)) & TIMER_WHEEL_MASK;
-    wheel_slot = this->wheel4.slot + i;
+    wheel_slot = wheel4.slot + i;
     hit_wheel_level = 4;
   } else {
     i = (timer_node.expire >> (TIMER_SLOT_BIT * 4)) & TIMER_WHEEL_MASK;
-    wheel_slot = this->wheel5.slot + i;
+    wheel_slot = wheel5.slot + i;
     hit_wheel_level = 5;
   }
 

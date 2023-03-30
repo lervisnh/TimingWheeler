@@ -12,11 +12,11 @@
 namespace _timer {
 
 void timerDriver::start() {
-  running.exchange(true);
-  startns = TimePoint::clock::now();
-  while (running) {
-    this->tik();
-    // if ((TimePoint::clock::now() - startns).count() >=
+  running_.exchange(true);
+  startns_ = TimePoint::clock::now();
+  while (running_) {
+    tik();
+    // if ((TimePoint::clock::now() - startns_).count() >=
     //     TICK_INTERVAL_US * 1000) {
     //   this->tik();
     // }
@@ -26,16 +26,16 @@ void timerDriver::start() {
 };
 
 void timerDriver::stop() {
-  running.exchange(false);
-  this->thread.join();
+  running_.exchange(false);
+  thread_.join();
   _timerEvent::timerEventObject::clear_all();
 };
 timerDriver::~timerDriver() { stop(); };
 
 timerDriver::timerDriver(timerWheel *timer_wheel)
-    : timerwheel(timer_wheel ? timer_wheel
+    : timerwheel_ptr_(timer_wheel ? timer_wheel
                              : &_timer::timerWheel::get_instance()),
-      running(false), thread([this] { this->start(); }){};
+      running_(false), thread_([this] { start(); }){};
 
 timerDriver &timerDriver::get_instance() {
   static timerDriver instance(nullptr);
@@ -44,12 +44,12 @@ timerDriver &timerDriver::get_instance() {
 
 void timerDriver::tik() {
   List timeouted;
-  timerwheel->update_time(cal_expires(TimePoint::clock::now()), timeouted);
+  timerwheel_ptr_->update_time(cal_expires(TimePoint::clock::now()), timeouted);
   _timer::timerNode *n = nullptr;
   while (timeouted.pop_back(n)) {
     LOG::trace("call expire = {}", n->expire);
     if (n->repeat_execute()) {
-      timerwheel->add_timer_node(*n);
+      timerwheel_ptr_->add_timer_node(*n);
     }
 
     if (_timerEvent::timerEventObject::expired.size() > 100000) {
@@ -59,7 +59,7 @@ void timerDriver::tik() {
 };
 
 _timer::time_t timerDriver::cal_expires(TimePoint &&time_point) {
-  return (time_point - startns).count() /*ns*/ / tik_ns;
+  return (time_point - startns_).count() /*ns*/ / tik_ns_;
 };
 
 }; // namespace _timer

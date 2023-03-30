@@ -11,7 +11,7 @@ class Logger {
 private:
   using LoggerImpl = std::shared_ptr<spdlog::logger>;
 
-  LoggerImpl impl;
+  LoggerImpl impl_;
 
 protected:
   static std::atomic<Logger *> singleton;

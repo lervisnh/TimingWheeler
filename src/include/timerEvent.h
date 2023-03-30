@@ -47,7 +47,7 @@ template <std::size_t... Ts> struct gen_seq<0, Ts...> : index<Ts...> {};
 
 class timerEventObject : public timerNode, public noncopyable {
 private:
-  const _bitTypes::uint64_t id;
+  const _bitTypes::uint64_t id_;
 
 public:
   static std::atomic_uint_least64_t counter;
@@ -85,14 +85,14 @@ public:
   };
 
   explicit timerEventObject(time_t exp)
-      : timerNode(exp), id(++timerEventObject::counter) {
-    timerEventObject::useing[id] = this;
+      : timerNode(exp), id_(++timerEventObject::counter) {
+    timerEventObject::useing[id_] = this;
   };
   virtual ~timerEventObject() {
     LOG::trace("virtual destructor timerEventObject");
   };
 
-  _bitTypes::uint64_t timerID() { return id; };
+  _bitTypes::uint64_t timerID() { return id_; };
 };
 
 template <typename F, typename... ARG>
@@ -102,15 +102,15 @@ private:
   using FunctionRetType = typename std::result_of_t<F(ARG...)>;
   using FunctionType = std::function<FunctionRetType(ARG...)>;
 
-  counter_t repeat;
-  time_t interval_expire;
+  counter_t repeat_;
+  time_t interval_expire_;
 
-  FunctionType func;
-  FunctionArgsType args;
+  FunctionType func_;
+  FunctionArgsType args_;
 
   template <typename... Args, std::size_t... Is>
   FunctionRetType function(std::tuple<Args...> &tup, _helper::index<Is...>) {
-    return func(std::get<Is>(tup)...);
+    return func_(std::get<Is>(tup)...);
   }
 
   template <typename... Args>
@@ -122,21 +122,21 @@ public:
   timerEvent() = delete;
 
   timerEvent(counter_t repeat_num, time_t interval, F &&f, ARG &&...argv)
-      : timerEventObject(interval), repeat(repeat_num),
-        interval_expire(interval), func(std::forward<F>(f)),
-        args(std::make_tuple(std::forward<ARG>(argv)...)){};
+      : timerEventObject(interval), repeat_(repeat_num),
+        interval_expire_(interval), func_(std::forward<F>(f)),
+        args_(std::make_tuple(std::forward<ARG>(argv)...)){};
 
-  FunctionRetType operator()() { return function(args); };
+  FunctionRetType operator()() { return function(args_); };
 
   counter_t execute() {
     (*this)();
-    return --repeat;
+    return --repeat_;
   };
 
   bool repeat_execute() {
     if (execute() > 0) {
-      LOG::trace("remaining repeat = {}", repeat);
-      expire += interval_expire;
+      LOG::trace("remaining repeat = {}", repeat_);
+      expire += interval_expire_;
       return true;
     }
     timerEventObject::useing.erase(timerID());

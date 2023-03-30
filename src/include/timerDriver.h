@@ -18,11 +18,11 @@ public:
   using TimePoint = std::chrono::time_point<Clock, Duration>;
 
 private:
-  const _timer::time_t tik_ns{TICK_INTERVAL_US * 1000};
-  timerWheel *timerwheel;
-  std::atomic_bool running;
-  TimePoint startns;
-  std::thread thread;
+  const _timer::time_t tik_ns_{TICK_INTERVAL_US * 1000};
+  timerWheel *timerwheel_ptr_;
+  std::atomic_bool running_;
+  TimePoint startns_;
+  std::thread thread_;
 
 protected:
   void start();

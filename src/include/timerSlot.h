@@ -9,8 +9,8 @@ namespace _timer {
 
 class List {
 private:
-  Node head;
-  Node tail;
+  Node head_;
+  Node tail_;
 
 public:
   counter_t counter;
@@ -28,10 +28,10 @@ public:
 
   template <typename T> bool pop_front(T *&item) {
     if (!empty()) {
-      Node *node = head.next;
+      Node *node = head_.next;
 
-      head.next = node->next;
-      head.next->prev = &head;
+      head_.next = node->next;
+      head_.next->prev = &head_;
       --counter;
 
       node->next = nullptr, node->prev = nullptr;
@@ -43,10 +43,10 @@ public:
 
   template <typename T> bool pop_back(T *&item) {
     if (!empty()) {
-      Node *node = tail.prev;
+      Node *node = tail_.prev;
 
-      tail.prev = node->prev;
-      tail.prev->next = &tail;
+      tail_.prev = node->prev;
+      tail_.prev->next = &tail_;
       --counter;
 
       node->next = nullptr, node->prev = nullptr;
