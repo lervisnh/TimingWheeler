@@ -1,7 +1,7 @@
 #include "bitTypes.h"
-#include "timerLogger.h"
 #include "timerDriver.h"
 #include "timerEvent.h"
+#include "timerLogger.h"
 #include "timerNode.h"
 #include "timerWheel.h"
 #include <ctime>
@@ -30,11 +30,18 @@ void timerDriver::stop() {
   thread_.join();
   _timerEvent::timerEventObject::clear_all();
 };
-timerDriver::~timerDriver() { stop(); };
+timerDriver::~timerDriver() { immediately_stop(); };
+
+void timerDriver::immediately_stop() {
+  if (running_) {
+    stop();
+  }
+  return;
+};
 
 timerDriver::timerDriver(timerWheel *timer_wheel)
     : timerwheel_ptr_(timer_wheel ? timer_wheel
-                             : &_timer::timerWheel::get_instance()),
+                                  : &_timer::timerWheel::get_instance()),
       running_(false), thread_([this] { start(); }){};
 
 timerDriver &timerDriver::get_instance() {

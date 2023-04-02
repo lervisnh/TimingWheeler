@@ -31,4 +31,9 @@ inline bool unregister_timer(unsigned long int timer_id) {
   return _timerEvent::timerEventObject::remove_timer_event(timer_id);
 };
 
+inline void wait_for_period(unsigned long microseconds) {
+  usleep(microseconds);
+  _timer::timerDriver::get_instance().immediately_stop();
+};
+
 }; // namespace timingWheeler
