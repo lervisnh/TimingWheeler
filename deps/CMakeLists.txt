@@ -1,6 +1,5 @@
-SUBDIRLIST(DEPS_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
-
-set(PYBIND11_NOPYTHON ON CACHE BOOL "Disable search for Python")
+# SUBDIRLIST(DEPS_SUBDIRS ${CMAKE_CURRENT_SOURCE_DIR})
+set(DEPS_SUBDIRS "spdlog;googletest")
 
 FOREACH(subdir ${DEPS_SUBDIRS})
     message(STATUS "Dependency : ${subdir}")
