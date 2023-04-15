@@ -39,6 +39,14 @@ void timerDriver::immediately_stop() {
   return;
 };
 
+void timerDriver::init_end() {
+  while (!running_) {
+    std::this_thread::yield();
+    LOG::trace("Waiting for timer driver is running...");
+  }
+  LOG::trace("Timer driver initialization ends");
+};
+
 timerDriver::timerDriver(timerWheel *timer_wheel)
     : timerwheel_ptr_(timer_wheel ? timer_wheel
                                   : &_timer::timerWheel::get_instance()),

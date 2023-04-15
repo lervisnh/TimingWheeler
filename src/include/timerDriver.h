@@ -37,6 +37,8 @@ public:
   _timer::time_t cal_expires(TimePoint &&);
   void immediately_stop();
 
+  void init_end();
+
   static timerDriver &get_instance();
 };
 

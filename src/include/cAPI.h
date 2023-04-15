@@ -7,9 +7,10 @@
 
 namespace timingWheeler {
 
-inline void init_timer() {
-  _timer::timerDriver::get_instance();
-  usleep(1);
+inline void init_timer() { _timer::timerDriver::get_instance().init_end(); };
+
+inline void terminate_timer() {
+  _timer::timerDriver::get_instance().immediately_stop();
 };
 
 template <typename F, typename... Args,
@@ -29,11 +30,6 @@ unsigned long int register_timer(_timer::counter_t repeat_num,
 
 inline bool unregister_timer(unsigned long int timer_id) {
   return _timerEvent::timerEventObject::remove_timer_event(timer_id);
-};
-
-inline void wait_for_period(unsigned long microseconds) {
-  usleep(microseconds);
-  _timer::timerDriver::get_instance().immediately_stop();
 };
 
 }; // namespace timingWheeler

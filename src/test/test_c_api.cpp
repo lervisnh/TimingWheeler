@@ -34,5 +34,6 @@ int main() {
        << _timerEvent::timerEventObject::useing.size()
        << ",\t expired-size = " << _timerEvent::timerEventObject::expired.size()
        << endl;
+  timingWheeler::terminate_timer();
   return 0;
 };
