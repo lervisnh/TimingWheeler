@@ -1,0 +1,20 @@
+cc_library(
+    name = "spdlog",
+    srcs = glob([
+        "spdlog/src/*.cpp",
+    ]),
+    hdrs = glob([
+        "spdlog/include/spdlog/*.h",
+        "spdlog/include/spdlog/cfg/*.h",
+        "spdlog/include/spdlog/details/*.h",
+        "spdlog/include/spdlog/fmt/*.h",
+        "spdlog/include/spdlog/fmt/bundled/*.h",
+        "spdlog/include/spdlog/sinks/*.h",
+    ]),
+    includes = [
+        "spdlog/include/",
+    ],
+    strip_include_prefix = 'spdlog/include',
+    copts = ["-DSPDLOG_COMPILED_LIB"],
+    visibility = ["//visibility:public"],
+)

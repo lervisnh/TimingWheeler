@@ -1,0 +1,29 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "timingWheelerSrc",
+    srcs = glob(["*.cpp"]),
+    hdrs = glob(["include/*.h"]),
+    includes = [
+        "include",
+    ],
+    strip_include_prefix = 'include',
+    deps = ["//deps:spdlog"]
+)
+
+BIN_DEPS = [":timingWheelerSrc"]
+BIN_LINK_OPTS = ["-pthread"]
+
+cc_binary(
+    name = "test_bit_type",
+    srcs = ["test/test_bit_type.cpp"],
+    deps = BIN_DEPS,
+    linkopts = BIN_LINK_OPTS
+)
+
+cc_binary(
+    name = "test_c_api",
+    srcs = ["test/test_c_api.cpp"],
+    deps = BIN_DEPS,
+    linkopts = BIN_LINK_OPTS
+)

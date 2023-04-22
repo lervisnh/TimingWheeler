@@ -40,3 +40,6 @@ compile_commands.json
 
 # Clangd cache
 .cache/clangd/
+
+# Bazel
+bazel-*
