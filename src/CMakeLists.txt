@@ -12,4 +12,7 @@ add_library(timingWheelerSrc OBJECT ${src_cpps})
 target_link_libraries(timingWheelerSrc PRIVATE ${INC_INTERFACES})
 
 add_subdirectory(test)
-add_subdirectory(py)
+
+if(BUILD_PY_LIB)
+    add_subdirectory(py)
+endif()

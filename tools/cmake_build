@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 
-sfdesc="Auto-build tool for timingWheeler"
+sfdesc="Auto-cmake-build tool for timingWheeler"
 sfargs+=("debug;D;Cmake debug build mode")
+sfargs+=("py;p;Build python library")
 
 TOOLS_ABSOLUTE_DIR="$( cd $(dirname ${BASH_SOURCE[0]}) && pwd )"
 source ${TOOLS_ABSOLUTE_DIR}/sf-argvs-parser
@@ -19,7 +20,15 @@ if [ "$debug" == true ]; then
     CMAKE_BUILD_MODE=Debug
 fi
 
+BUILD_PY_LIB=OFF
+if [ "$py" == true ]; then
+    BUILD_PY_LIB=ON
+fi
+
 cd ${CMAKE_BUILD_DIR}
-cmake -S ${PROJECT_ABSOLUTE_DIR} -B ${CMAKE_BUILD_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_MODE} && \
-make && \
-cp compile_commands.json ${PROJECT_ABSOLUTE_DIR}
+cmake -S ${PROJECT_ABSOLUTE_DIR} \
+      -B ${CMAKE_BUILD_DIR} \
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_MODE} \
+      -DBUILD_PY_LIB=${BUILD_PY_LIB} \
+&& make -j \
+&& cp compile_commands.json ${PROJECT_ABSOLUTE_DIR}

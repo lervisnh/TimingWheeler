@@ -40,5 +40,7 @@ message(STATUS "Compile mode: ${CMAKE_BUILD_TYPE}")
 
 include(cmake/utils.cmake)
 
+option(BUILD_PY_LIB "Build python library with pybind11" OFF)
+
 add_subdirectory(deps)
 add_subdirectory(src)
