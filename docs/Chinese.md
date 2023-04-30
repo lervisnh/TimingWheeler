@@ -15,7 +15,6 @@
 - [快速开始](#快速开始)
   - [开发前的配置要求](#开发前的配置要求)
   - [安装步骤](#安装步骤)
-  - [目录说明](#目录说明)
 - [作者](#作者)
 - [鸣谢](#鸣谢)
 
@@ -26,23 +25,57 @@
 
 ### 开发前的配置要求
 
-1. xxxxx x.x.x
-2. xxxxx x.x.x
+1. gcc >= 4.7
+2. cmake >= 3.2
 
-### **安装步骤**
+
+### **编译**
 
 ```sh
 git clone https://github.com/lervisnh/timingWheeler.git
+cd timingWheeler
+git submodule update --init --recursive
+./tools/cmake_build
 ```
 
-### 目录说明
-eg:
 
+### **运行示例**
+```sh
+./build/bin/test/test_c_api
+
+# 输出
+1
+2
+3
+unregister 4 : true
+timer event using-size = 0,      expired-size = 3
 ```
-filetree 
-├── LICENSE.txt
-├── README.md
-└── 
+以上二进制对应文件 : [test_c_api.cpp](../src/test/test_c_api.cpp)
+
+
+### **安装**
+
+```sh
+cd build # timingWheeler/build 文件夹
+make install
+```
+
+
+### **如何使用**
+```c++
+#include "timingWheeler/cAPI.h"
+
+# 初始化定时器
+timingWheeler::init_timer()
+
+# 注册定时事件
+auto timer_id = timingWheeler::register_timer(重复次数, 间隔时间, 定时函数, 定时函数入参1, 定时函数入参2, ...)
+
+# 注销定时事件
+timingWheeler::unregister_timer(register_timer返回的定时器ID)
+
+# 终止定时器
+timingWheeler::terminate_timer()
 ```
 
 ### 作者

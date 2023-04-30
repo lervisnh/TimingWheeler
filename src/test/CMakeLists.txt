@@ -1,5 +1,7 @@
 FILE(GLOB tests *.cpp)
 
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/test)
+
 FOREACH(test_source ${tests})
     get_filename_component(test_name ${test_source} NAME_WE)
     add_executable( ${test_name} ${test_source} )
